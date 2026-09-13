@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Weblens",
+  "version": "1.0.0",
+  "description": "Undergraduate Project - Weblens",
+  "action": {
+    "default_popup": "src/popup/popup.html"
+  },
+  "permissions": []
+}
