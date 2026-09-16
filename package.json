@@ -1,0 +1,15 @@
+{
+  "name": "weblens",
+  "version": "1.0.0",
+  "description": "Undergraduate Project - Weblens",
+  "main": "src/popup/popup.js",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/popup/input.css -o ./src/popup/popup.css --minify",
+    "watch:css": "tailwindcss -i ./src/popup/input.css -o ./src/popup/popup.css --watch",
+    "dev": "npm run watch:css"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.0.0",
+    "tailwindcss": "^4.0.0"
+  }
+}
