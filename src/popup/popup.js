@@ -2,44 +2,30 @@ const startBtn = document.getElementById("startBtn");
 const stopBtn = document.getElementById("stopBtn");
 const status = document.getElementById("status");
 
-if (startBtn) {
-    startBtn.addEventListener("click", async () => {
-        status.textContent = "Inspection mode active!";
+async function sendInspectionMessage(action) {
+    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-        if (typeof chrome !== "undefined" && chrome.tabs) {
-            try {
-                const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-                if (tab && tab.id) {
-                    chrome.tabs.sendMessage(tab.id, { action: "START_INSPECTION" }, async (response) => {
-                        if (chrome.runtime.lastError) {
-                            await chrome.scripting.executeScript({
-                                target: { tabId: tab.id },
-                                files: ["src/content/content.js"]
-                            });
-                            chrome.tabs.sendMessage(tab.id, { action: "START_INSPECTION" });
-                        }
-                    });
-                }
-            } catch (err) {
-                console.error("Error activating inspection mode:", err);
-            }
-        }
-    });
+    if (!tab?.id) {
+        throw new Error("No active tab is available for inspection.");
+    }
+
+    await chrome.tabs.sendMessage(tab.id, { action });
 }
 
-if (stopBtn) {
-    stopBtn.addEventListener("click", async () => {
-        status.textContent = "Inspection stopped.";
-
-        if (typeof chrome !== "undefined" && chrome.tabs) {
-            try {
-                const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-                if (tab && tab.id) {
-                    chrome.tabs.sendMessage(tab.id, { action: "STOP_INSPECTION" });
-                }
-            } catch (err) {
-                console.error("Error stopping inspection mode:", err);
-            }
-        }
-    });
+async function handleInspectionAction(action, message) {
+    try {
+        await sendInspectionMessage(action);
+        status.textContent = message;
+    } catch (error) {
+        status.textContent = "This page cannot be inspected.";
+        console.error(`Unable to send ${action}:`, error);
+    }
 }
+
+startBtn?.addEventListener("click", () => {
+    handleInspectionAction("START_INSPECTION", "Inspection mode active!");
+});
+
+stopBtn?.addEventListener("click", () => {
+    handleInspectionAction("STOP_INSPECTION", "Inspection stopped.");
+});
