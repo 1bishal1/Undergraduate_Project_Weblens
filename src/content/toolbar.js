@@ -16,28 +16,28 @@
             }
             #weblens-toolbar {
                 position: fixed !important;
-                top: 16px !important;
+                top: 18px !important;
                 left: 50% !important;
                 transform: translateX(-50%) !important;
                 z-index: 2147483647 !important;
-                background: rgba(15, 23, 42, 0.92) !important;
+                background: rgba(15, 23, 42, 0.94) !important;
                 backdrop-filter: blur(16px) !important;
                 -webkit-backdrop-filter: blur(16px) !important;
-                border: 1px solid rgba(255, 255, 255, 0.15) !important;
-                border-radius: 40px !important;
-                padding: 6px 8px 6px 14px !important;
+                border: 1px solid rgba(255, 255, 255, 0.16) !important;
+                border-radius: 9999px !important;
+                padding: 10px 22px !important;
                 display: flex !important;
                 align-items: center !important;
-                gap: 10px !important;
-                box-shadow: 0 12px 32px rgba(0, 0, 0, 0.45), 0 2px 6px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) !important;
+                gap: 20px !important;
+                box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.2) !important;
                 user-select: none !important;
                 animation: weblens-slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
-                line-height: 1 !important;
+                line-height: 1.2 !important;
             }
             @keyframes weblens-slide-down {
                 from {
                     opacity: 0;
-                    transform: translate(-50%, -12px) scale(0.98);
+                    transform: translate(-50%, -14px) scale(0.97);
                 }
                 to {
                     opacity: 1;
@@ -47,91 +47,76 @@
             .weblens-brand {
                 display: flex !important;
                 align-items: center !important;
-                gap: 8px !important;
-                padding-right: 4px !important;
-            }
-            .weblens-brand-logo {
-                width: 24px !important;
-                height: 24px !important;
-                background: linear-gradient(135deg, #3b82f6, #1d4ed8) !important;
-                border-radius: 50% !important;
-                display: flex !important;
-                align-items: center !important;
-                justify-content: center !important;
-                box-shadow: 0 0 10px rgba(59, 130, 246, 0.5) !important;
+                padding: 0 4px !important;
             }
             .weblens-brand-title {
                 color: #ffffff !important;
                 font-weight: 700 !important;
-                font-size: 14px !important;
+                font-size: 15px !important;
                 letter-spacing: -0.3px !important;
-            }
-            .weblens-status-dot {
-                width: 6px !important;
-                height: 6px !important;
-                background-color: #10b981 !important;
-                border-radius: 50% !important;
-                box-shadow: 0 0 6px #10b981 !important;
             }
             .weblens-divider {
                 width: 1px !important;
-                height: 20px !important;
-                background: rgba(255, 255, 255, 0.15) !important;
+                height: 24px !important;
+                background: rgba(255, 255, 255, 0.18) !important;
             }
             .weblens-nav-buttons {
                 display: flex !important;
                 align-items: center !important;
-                gap: 4px !important;
-                background: rgba(255, 255, 255, 0.06) !important;
-                padding: 3px !important;
-                border-radius: 30px !important;
+                gap: 12px !important;
+                background: rgba(255, 255, 255, 0.04) !important;
+                padding: 6px 8px !important;
+                border-radius: 9999px !important;
                 border: 1px solid rgba(255, 255, 255, 0.08) !important;
             }
             .weblens-nav-btn {
-                background: transparent !important;
-                border: none !important;
-                color: rgba(255, 255, 255, 0.75) !important;
-                padding: 7px 14px !important;
-                border-radius: 20px !important;
-                font-size: 13px !important;
+                background: rgba(255, 255, 255, 0.08) !important;
+                border: 1px solid rgba(255, 255, 255, 0.1) !important;
+                color: #e2e8f0 !important;
+                padding: 10px 22px !important;
+                border-radius: 9999px !important;
+                font-size: 13.5px !important;
                 font-weight: 500 !important;
                 cursor: pointer !important;
                 display: flex !important;
                 align-items: center !important;
-                gap: 6px !important;
-                transition: all 0.18s ease !important;
+                justify-content: center !important;
+                transition: all 0.2s ease !important;
                 outline: none !important;
                 white-space: nowrap !important;
             }
             .weblens-nav-btn:hover {
                 color: #ffffff !important;
-                background: rgba(255, 255, 255, 0.1) !important;
+                background: rgba(255, 255, 255, 0.16) !important;
+                border-color: rgba(255, 255, 255, 0.2) !important;
             }
             .weblens-nav-btn.active {
-                background: linear-gradient(135deg, #2563eb, #1d4ed8) !important;
-                color: #ffffff !important;
+                background: #ffffff !important;
+                border: 1px solid #ffffff !important;
+                color: #000000 !important;
                 font-weight: 600 !important;
-                box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4) !important;
+                box-shadow: 0 4px 14px rgba(255, 255, 255, 0.25) !important;
             }
             .weblens-close-btn {
                 background: rgba(239, 68, 68, 0.15) !important;
-                border: 1px solid rgba(239, 68, 68, 0.3) !important;
+                border: 1px solid rgba(239, 68, 68, 0.35) !important;
                 color: #f87171 !important;
-                padding: 7px 12px !important;
-                border-radius: 20px !important;
-                font-size: 12px !important;
+                padding: 10px 18px !important;
+                border-radius: 9999px !important;
+                font-size: 13px !important;
                 font-weight: 600 !important;
                 cursor: pointer !important;
                 display: flex !important;
                 align-items: center !important;
-                gap: 5px !important;
-                transition: all 0.18s ease !important;
+                gap: 7px !important;
+                transition: all 0.2s ease !important;
                 outline: none !important;
             }
             .weblens-close-btn:hover {
-                background: rgba(239, 68, 68, 0.85) !important;
+                background: rgba(239, 68, 68, 0.88) !important;
+                border-color: rgba(239, 68, 68, 0.9) !important;
                 color: #ffffff !important;
-                box-shadow: 0 2px 8px rgba(239, 68, 68, 0.4) !important;
+                box-shadow: 0 4px 12px rgba(239, 68, 68, 0.45) !important;
             }
         `;
         document.head.appendChild(style);
@@ -145,39 +130,21 @@
         toolbarElement.id = NAVBAR_ID;
         toolbarElement.innerHTML = `
             <div class="weblens-brand">
-                <div class="weblens-brand-logo">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                </div>
                 <span class="weblens-brand-title">WebLens</span>
-                <span class="weblens-status-dot" title="Inspection Active"></span>
             </div>
 
             <div class="weblens-divider"></div>
 
             <div class="weblens-nav-buttons">
                 <button class="weblens-nav-btn ${activeTab === 'font' ? 'active' : ''}" data-tab="font">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polyline points="4 7 4 4 20 4 20 7"></polyline>
-                        <line x1="9" y1="20" x2="15" y2="20"></line>
-                        <line x1="12" y1="4" x2="12" y2="20"></line>
-                    </svg>
                     Font / Size
                 </button>
 
                 <button class="weblens-nav-btn ${activeTab === 'colors' ? 'active' : ''}" data-tab="colors">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-                    </svg>
                     Colors
                 </button>
 
                 <button class="weblens-nav-btn ${activeTab === 'coming_soon' ? 'active' : ''}" data-tab="coming_soon">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
                     Coming Soon...
                 </button>
             </div>
