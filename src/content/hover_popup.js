@@ -2,6 +2,88 @@
     const POPUP_ID = "weblens-hover-popup";
     let popupElement;
 
+    // Canvas font rendering detection
+    let canvasContext;
+    const TEST_TEXT = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const TEST_SIZE = "72px";
+    const BASE_FONTS = ["monospace", "sans-serif", "serif"];
+    let baseWidths = null;
+
+    function getCanvasContext() {
+        if (!canvasContext) {
+            const canvas = document.createElement("canvas");
+            canvasContext = canvas.getContext("2d");
+        }
+        return canvasContext;
+    }
+
+    function measureTextWidth(text, fontSpec) {
+        try {
+            const ctx = getCanvasContext();
+            if (!ctx) return 0;
+            ctx.font = fontSpec;
+            return ctx.measureText(text).width;
+        } catch (e) {
+            return 0;
+        }
+    }
+
+    function initBaseWidths() {
+        if (!baseWidths) {
+            baseWidths = {};
+            for (const baseFont of BASE_FONTS) {
+                baseWidths[baseFont] = measureTextWidth(TEST_TEXT, `${TEST_SIZE} ${baseFont}`);
+            }
+        }
+    }
+
+    function isFontRenderedOnCanvas(fontName) {
+        if (!fontName) return false;
+        const lower = fontName.toLowerCase();
+
+        // Generic font families are always valid render targets
+        if (["sans-serif", "serif", "monospace", "cursive", "fantasy", "system-ui"].includes(lower)) {
+            return true;
+        }
+
+        initBaseWidths();
+
+        // Compare text width of candidate font against base fallbacks
+        for (const baseFont of BASE_FONTS) {
+            const testWidth = measureTextWidth(TEST_TEXT, `${TEST_SIZE} "${fontName}", ${baseFont}`);
+            if (testWidth !== baseWidths[baseFont] && testWidth > 0) {
+                return true; // Candidate font is active and rendered by browser
+            }
+        }
+
+        return false;
+    }
+
+    function formatFontName(fontName) {
+        if (!fontName) return "Unknown";
+
+        // Clean internal web font loader prefixes & suffixes (e.g. "gf_Roboto variant1" -> "Roboto")
+        let cleaned = fontName
+            .replace(/^gf_/i, "")
+            .replace(/\s*variant\d*$/i, "")
+            .replace(/^__+/g, "")
+            .trim();
+
+        if (!cleaned) cleaned = fontName;
+
+        const lower = cleaned.toLowerCase();
+
+        if (lower === "sans-serif") return "Sans-serif";
+        if (lower === "serif") return "Serif";
+        if (lower === "monospace") return "Monospace";
+        if (lower === "cursive") return "Cursive";
+        if (lower === "fantasy") return "Fantasy";
+        if (lower === "system-ui") return "System-UI";
+        if (lower === "-apple-system" || lower === "blinkmacsystemfont") return "System";
+
+        return cleaned;
+    }
+
     function getExactFont(fontFamilyStr) {
         if (!fontFamilyStr || typeof fontFamilyStr !== "string") {
             return "Unknown";
@@ -12,7 +94,7 @@
             return "Unknown";
         }
 
-        // Split font stack by commas (stripping surrounding quotes and whitespace)
+        // Split font stack by commas (stripping quotes & whitespace)
         const fonts = trimmed
             .split(",")
             .map((f) => f.trim().replace(/^["']|["']$/g, ""))
@@ -22,38 +104,15 @@
             return "Unknown";
         }
 
-        // Try checking which specific font is loaded & active in document
-        if (document.fonts && typeof document.fonts.check === "function") {
-            for (const font of fonts) {
-                const lower = font.toLowerCase();
-                if (["sans-serif", "serif", "monospace", "cursive", "fantasy", "system-ui"].includes(lower)) {
-                    continue;
-                }
-                try {
-                    if (document.fonts.check(`16px "${font}"`)) {
-                        return font;
-                    }
-                } catch (e) {
-                    // Ignore check error and continue loop
-                }
-            }
-        }
-
-        // Fallback: return the first primary (non-generic) font declared
+        // Test each font in the declared stack to find which one is actually rendered
         for (const font of fonts) {
-            const lower = font.toLowerCase();
-            if (!["sans-serif", "serif", "monospace", "cursive", "fantasy", "system-ui", "initial", "inherit"].includes(lower)) {
-                return font;
+            if (isFontRenderedOnCanvas(font)) {
+                return formatFontName(font);
             }
         }
 
-        // Return first entry if only generic font keyword was supplied
-        const firstFont = fonts[0];
-        if (firstFont) {
-            return firstFont;
-        }
-
-        return "Unknown";
+        // Fallback to first primary font entry
+        return formatFontName(fonts[0]);
     }
 
     function getExactFontSize(fontSizeStr) {
@@ -67,6 +126,24 @@
         }
 
         return trimmed;
+    }
+
+    function hasTextContent(element) {
+        if (!element || !(element instanceof Element)) {
+            return false;
+        }
+
+        // SVG graphic elements (path, rect, circle, g, etc.) don't contain renderable text
+        if (element instanceof SVGElement) {
+            const tag = element.tagName.toLowerCase();
+            if (tag !== "text" && tag !== "tspan") {
+                return false;
+            }
+        }
+
+        // Check for non-whitespace text content
+        const text = element.textContent ? element.textContent.trim() : "";
+        return text.length > 0;
     }
 
     function show(element, event) {
@@ -96,12 +173,17 @@
             document.documentElement.appendChild(popupElement);
         }
 
-        const styles = getComputedStyle(element);
         const tagName = element.tagName ? element.tagName.toLowerCase() : "Unknown";
-        const fontName = getExactFont(styles.fontFamily);
-        const fontSize = getExactFontSize(styles.fontSize);
 
-        popupElement.textContent = `${tagName} | ${fontName} | ${fontSize}`;
+        if (!hasTextContent(element)) {
+            popupElement.textContent = `${tagName} | Empty (...)`;
+        } else {
+            const styles = getComputedStyle(element);
+            const fontName = getExactFont(styles.fontFamily);
+            const fontSize = getExactFontSize(styles.fontSize);
+            popupElement.textContent = `${tagName} | ${fontName} | ${fontSize}`;
+        }
+
         popupElement.style.left = `${Math.min(event.clientX + 12, window.innerWidth - 330)}px`;
         popupElement.style.top = `${Math.min(event.clientY + 12, window.innerHeight - 60)}px`;
         popupElement.hidden = false;
