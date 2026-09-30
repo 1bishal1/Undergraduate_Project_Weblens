@@ -14,7 +14,8 @@
       "matches": ["<all_urls>"],
       "js": [
         "src/content/pointer.js",
-        "src/content/hover-popup.js",
+        "src/content/hover_popup.js",
+        "src/content/toolbar.js",
         "src/content/inspector.js",
         "src/content/content.js"
       ],
