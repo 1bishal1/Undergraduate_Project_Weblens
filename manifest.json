@@ -11,15 +11,28 @@
   ],
   "content_scripts": [
     {
-      "matches": ["<all_urls>"],
+      "matches": [
+        "<all_urls>"
+      ],
       "js": [
         "src/content/pointer.js",
+        "src/content/color_inspector.js",
         "src/content/hover_popup.js",
         "src/content/toolbar.js",
         "src/content/inspector.js",
         "src/content/content.js"
       ],
       "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "src/content/toolbar.html"
+      ],
+      "matches": [
+        "<all_urls>"
+      ]
     }
   ]
 }
