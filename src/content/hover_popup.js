@@ -146,10 +146,16 @@
         return text.length > 0;
     }
 
+    let currentInspectedElement = null;
+    let lastMouseEvent = null;
+
     function show(element, event) {
         if (!element || !(element instanceof Element)) {
             return;
         }
+
+        currentInspectedElement = element;
+        if (event) lastMouseEvent = event;
 
         if (!popupElement) {
             popupElement = document.createElement("div");
@@ -175,18 +181,54 @@
 
         const tagName = element.tagName ? element.tagName.toLowerCase() : "Unknown";
 
-        if (!hasTextContent(element)) {
-            popupElement.textContent = `${tagName} | Empty (...)`;
+        const activeTab = (window.WebLensState && window.WebLensState.activeTab) ||
+            (window.WebLensToolbar && typeof window.WebLensToolbar.getActiveTab === "function"
+                ? window.WebLensToolbar.getActiveTab()
+                : "font");
+
+        if (activeTab === "colors") {
+            let colorInfo = null;
+            if (window.WebLensColorInspector) {
+                if (lastMouseEvent) {
+                    colorInfo = window.WebLensColorInspector.getColorAtPoint(
+                        lastMouseEvent.clientX,
+                        lastMouseEvent.clientY
+                    );
+                }
+                if (!colorInfo) {
+                    colorInfo = window.WebLensColorInspector.getElementPrimaryColor(element);
+                }
+            }
+            if (colorInfo && colorInfo.hex) {
+                const colorName = colorInfo.colorName || "Unknown";
+                popupElement.textContent = `${tagName} | ${colorInfo.hex} | ${colorName}`;
+            } else {
+                popupElement.textContent = `${tagName} | #000000 | Unknown`;
+            }
+        } else if (activeTab === "coming_soon") {
+            popupElement.textContent = `${tagName} | Feature Coming Soon...`;
         } else {
-            const styles = getComputedStyle(element);
-            const fontName = getExactFont(styles.fontFamily);
-            const fontSize = getExactFontSize(styles.fontSize);
-            popupElement.textContent = `${tagName} | ${fontName} | ${fontSize}`;
+            if (!hasTextContent(element)) {
+                popupElement.textContent = `${tagName} | Empty (...)`;
+            } else {
+                const styles = getComputedStyle(element);
+                const fontName = getExactFont(styles.fontFamily);
+                const fontSize = getExactFontSize(styles.fontSize);
+                popupElement.textContent = `${tagName} | ${fontName} | ${fontSize}`;
+            }
         }
 
-        popupElement.style.left = `${Math.min(event.clientX + 12, window.innerWidth - 330)}px`;
-        popupElement.style.top = `${Math.min(event.clientY + 12, window.innerHeight - 60)}px`;
+        if (lastMouseEvent) {
+            popupElement.style.left = `${Math.min(lastMouseEvent.clientX + 12, window.innerWidth - 330)}px`;
+            popupElement.style.top = `${Math.min(lastMouseEvent.clientY + 12, window.innerHeight - 60)}px`;
+        }
         popupElement.hidden = false;
+    }
+
+    function refresh() {
+        if (currentInspectedElement) {
+            show(currentInspectedElement, lastMouseEvent);
+        }
     }
 
     function hide() {
@@ -198,7 +240,9 @@
     function remove() {
         popupElement?.remove();
         popupElement = undefined;
+        currentInspectedElement = null;
+        lastMouseEvent = null;
     }
 
-    window.WebLensHoverPopup = { show, hide, remove };
+    window.WebLensHoverPopup = { show, hide, remove, refresh };
 })();

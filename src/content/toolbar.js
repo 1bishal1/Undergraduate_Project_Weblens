@@ -24,17 +24,22 @@
     fetchToolbarHTML();
 
     function injectStyles() {
-    if (document.getElementById("weblens-toolbar-styles")) return;
-
-    const style = document.createElement("style");
-    style.id = "weblens-toolbar-styles";
+    let style = document.getElementById("weblens-toolbar-styles");
+    if (!style) {
+        style = document.createElement("style");
+        style.id = "weblens-toolbar-styles";
+        document.head.appendChild(style);
+    }
 
     style.textContent = `
+        #weblens-toolbar,
         #weblens-toolbar * {
             box-sizing: border-box !important;
-            margin: 0 !important;
-            padding: 0 !important;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+        }
+
+        #weblens-toolbar * {
+            margin: 0 !important;
         }
 
         #weblens-toolbar {
@@ -51,12 +56,12 @@
             border: 1px solid rgba(255, 255, 255, 0.12) !important;
             border-radius: 9999px !important;
 
-            padding: 10px 20px !important;
+            padding: 12px 22px !important;
 
             display: flex !important;
             align-items: center !important;
 
-            gap: 16px !important;
+            gap: 20px !important;
 
             box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45) !important;
 
@@ -64,7 +69,7 @@
 
             animation: weblens-slide-down 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 
-            line-height: 1 !important;
+            line-height: 1.2 !important;
         }
 
         @keyframes weblens-slide-down {
@@ -79,59 +84,76 @@
             }
         }
 
-        .weblens-brand {
+        #weblens-toolbar .weblens-brand {
             display: flex !important;
             align-items: center !important;
 
-            padding: 0 4px !important;
+            padding: 0 4px 0 2px !important;
 
-            font-size: 20px !important;
+            font-size: 18px !important;
             font-weight: 700 !important;
-            letter-spacing: -0.4px !important;
+            letter-spacing: -0.35px !important;
 
             white-space: nowrap !important;
-        }
-
-        .weblens-brand-web {
-            color: #ffffff !important;
-        }
-
-        .weblens-brand-lens {
-            color: #38bdf8 !important;
-        }
-
-        .weblens-divider {
-            width: 1px !important;
-            height: 26px !important;
-
-            background: rgba(255, 255, 255, 0.15) !important;
-
             flex-shrink: 0 !important;
         }
 
-        .weblens-nav-buttons {
-            display: flex !important;
-            align-items: center !important;
-
-            gap: 10px !important;
+        #weblens-toolbar .weblens-brand-web {
+            color: #ffffff !important;
         }
 
-        .weblens-nav-btn {
-            background: #172133 !important;
+        #weblens-toolbar .weblens-brand-lens {
+            color: #38bdf8 !important;
+        }
 
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+        #weblens-toolbar .weblens-divider {
+            width: 1px !important;
+            height: 32px !important;
 
-            color: #e2e8f0 !important;
+            background: rgba(255, 255, 255, 0.14) !important;
 
-            padding: 7px 14px !important;
+            flex-shrink: 0 !important;
+            margin: 0 4px !important;
+        }
 
-            min-height: 30px !important;
+        #weblens-toolbar .weblens-nav-buttons {
+            display: flex !important;
+            flex-direction: row !important;
+            flex-wrap: nowrap !important;
+            align-items: center !important;
 
-            border-radius: 9px !important;
+            gap: 8px !important;
+
+            padding: 6px !important;
+
+            background: rgba(15, 23, 42, 0.65) !important;
+            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 9999px !important;
+            flex-shrink: 0 !important;
+        }
+
+        #weblens-toolbar button.weblens-nav-btn {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+
+            background: transparent !important;
+
+            border: 1px solid transparent !important;
+
+            color: #94a3b8 !important;
+
+            padding: 9px 18px !important;
+
+            min-height: 36px !important;
+            height: auto !important;
+            width: auto !important;
+            min-width: 0 !important;
+
+            border-radius: 9999px !important;
 
             font-size: 13px !important;
             font-weight: 500 !important;
-            line-height: 1 !important;
+            line-height: 1.25 !important;
 
             cursor: pointer !important;
 
@@ -145,76 +167,103 @@
                 background 0.2s ease,
                 border-color 0.2s ease,
                 color 0.2s ease,
-                transform 0.2s ease !important;
+                box-shadow 0.2s ease !important;
 
             outline: none !important;
 
             white-space: nowrap !important;
+            flex: 0 0 auto !important;
+            flex-shrink: 0 !important;
         }
 
-        .weblens-nav-btn:hover {
-            color: #ffffff !important;
-
-            background: #1f2c42 !important;
-
-            border-color: rgba(255, 255, 255, 0.18) !important;
-
-            transform: translateY(-1px) !important;
+        #weblens-toolbar button.weblens-nav-btn span {
+            display: block !important;
+            padding: 0 !important;
+            line-height: 1.25 !important;
+            pointer-events: none !important;
         }
 
-        .weblens-nav-btn:focus-visible {
+        #weblens-toolbar button.weblens-nav-btn:hover {
+            color: #f1f5f9 !important;
+
+            background: rgba(255, 255, 255, 0.06) !important;
+
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        #weblens-toolbar button.weblens-nav-btn:focus-visible {
             outline: 2px solid #38bdf8 !important;
             outline-offset: 2px !important;
         }
 
-        .weblens-nav-btn.active,
-        .weblens-nav-btn:active {
-            background: #000000 !important;
+        #weblens-toolbar button.weblens-nav-btn.active {
+            background: #1e293b !important;
 
-            border: 1px solid rgba(255, 255, 255, 0.28) !important;
+            border: 1px solid rgba(56, 189, 248, 0.45) !important;
 
             color: #ffffff !important;
 
             font-weight: 600 !important;
 
             box-shadow:
-                0 2px 10px rgba(0, 0, 0, 0.5),
-                inset 0 1px 0 rgba(255, 255, 255, 0.12) !important;
-
-            transform: translateY(0) !important;
+                0 0 0 1px rgba(56, 189, 248, 0.15),
+                0 4px 14px rgba(0, 0, 0, 0.35) !important;
         }
 
-        .weblens-close-btn {
+        #weblens-toolbar button.weblens-nav-btn:active:not(.active) {
+            background: rgba(255, 255, 255, 0.04) !important;
+            transform: scale(0.98) !important;
+        }
+
+        #weblens-toolbar button.weblens-close-btn {
+            appearance: none !important;
+            -webkit-appearance: none !important;
+
             background: rgba(244, 63, 94, 0.1) !important;
 
             border: 1px solid rgba(244, 63, 94, 0.5) !important;
 
             color: #f87171 !important;
 
-            padding: 8px 18px !important;
+            padding: 9px 18px !important;
 
-            min-height: 30px !important;
+            min-height: 36px !important;
+            height: auto !important;
+            width: auto !important;
 
             border-radius: 9999px !important;
 
-            font-size: 14px !important;
+            font-size: 13px !important;
             font-weight: 600 !important;
+            line-height: 1.25 !important;
 
             cursor: pointer !important;
 
-            display: flex !important;
+            display: inline-flex !important;
             align-items: center !important;
+            justify-content: center !important;
 
-            gap: 7px !important;
+            gap: 8px !important;
 
             transition: all 0.2s ease !important;
 
             outline: none !important;
 
             white-space: nowrap !important;
+            flex-shrink: 0 !important;
         }
 
-        .weblens-close-btn:hover {
+        #weblens-toolbar button.weblens-close-btn svg {
+            flex-shrink: 0 !important;
+            display: block !important;
+        }
+
+        #weblens-toolbar button.weblens-close-btn span {
+            padding: 0 !important;
+            line-height: 1.25 !important;
+        }
+
+        #weblens-toolbar button.weblens-close-btn:hover {
             background: rgba(244, 63, 94, 0.2) !important;
 
             border-color: rgba(244, 63, 94, 0.75) !important;
@@ -224,8 +273,6 @@
             box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25) !important;
         }
     `;
-
-    document.head.appendChild(style);
 }
     async function createToolbar() {
         injectStyles();
