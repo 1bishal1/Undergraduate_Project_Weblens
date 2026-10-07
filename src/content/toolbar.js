@@ -1,7 +1,7 @@
 (function () {
     const NAVBAR_ID = "weblens-toolbar";
     let toolbarElement;
-    let activeTab = "font"; // 'font' | 'colors' | 'coming_soon'
+    let activeTab = "font"; // 'font' | 'colors' | 'tech_stack'
     let toolbarHtmlPromise = null;
 
     window.WebLensState = window.WebLensState || {};
@@ -49,11 +49,9 @@
             transform: translateX(-50%) !important;
             z-index: 2147483647 !important;
 
-            background: #0c1322 !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
+            background: #000000 !important;
 
-            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            border: none !important;
             border-radius: 9999px !important;
 
             padding: 12px 22px !important;
@@ -124,10 +122,10 @@
 
             gap: 8px !important;
 
-            padding: 6px !important;
+            padding: 4px !important;
 
-            background: rgba(15, 23, 42, 0.65) !important;
-            border: 1px solid rgba(255, 255, 255, 0.08) !important;
+            background: transparent !important;
+            border: none !important;
             border-radius: 9999px !important;
             flex-shrink: 0 !important;
         }
@@ -138,9 +136,9 @@
 
             background: transparent !important;
 
-            border: 1px solid transparent !important;
+            border: none !important;
 
-            color: #94a3b8 !important;
+            color: #a3a3a3 !important;
 
             padding: 9px 18px !important;
 
@@ -165,9 +163,9 @@
 
             transition:
                 background 0.2s ease,
-                border-color 0.2s ease,
-                color 0.2s ease,
-                box-shadow 0.2s ease !important;
+                color 0.2s ease !important;
+
+            box-shadow: none !important;
 
             outline: none !important;
 
@@ -183,35 +181,28 @@
             pointer-events: none !important;
         }
 
-        #weblens-toolbar button.weblens-nav-btn:hover {
-            color: #f1f5f9 !important;
-
-            background: rgba(255, 255, 255, 0.06) !important;
-
-            border-color: rgba(255, 255, 255, 0.1) !important;
-        }
-
-        #weblens-toolbar button.weblens-nav-btn:focus-visible {
-            outline: 2px solid #38bdf8 !important;
-            outline-offset: 2px !important;
-        }
-
+        #weblens-toolbar button.weblens-nav-btn:hover,
         #weblens-toolbar button.weblens-nav-btn.active {
-            background: #1e293b !important;
+            background: #ffffff !important;
 
-            border: 1px solid rgba(56, 189, 248, 0.45) !important;
+            border: none !important;
 
-            color: #ffffff !important;
+            color: #000000 !important;
 
             font-weight: 600 !important;
 
-            box-shadow:
-                0 0 0 1px rgba(56, 189, 248, 0.15),
-                0 4px 14px rgba(0, 0, 0, 0.35) !important;
+            box-shadow: none !important;
         }
 
-        #weblens-toolbar button.weblens-nav-btn:active:not(.active) {
-            background: rgba(255, 255, 255, 0.04) !important;
+        #weblens-toolbar button.weblens-nav-btn:focus-visible {
+            outline: 2px solid #ffffff !important;
+            outline-offset: 2px !important;
+        }
+
+        #weblens-toolbar button.weblens-nav-btn:active {
+            background: #ffffff !important;
+            color: #000000 !important;
+            border: none !important;
             transform: scale(0.98) !important;
         }
 
@@ -219,11 +210,11 @@
             appearance: none !important;
             -webkit-appearance: none !important;
 
-            background: rgba(244, 63, 94, 0.1) !important;
+            background: #dc2626 !important;
 
-            border: 1px solid rgba(244, 63, 94, 0.5) !important;
+            border: none !important;
 
-            color: #f87171 !important;
+            color: #ffffff !important;
 
             padding: 9px 18px !important;
 
@@ -264,13 +255,13 @@
         }
 
         #weblens-toolbar button.weblens-close-btn:hover {
-            background: rgba(244, 63, 94, 0.2) !important;
+            background: #b91c1c !important;
 
-            border-color: rgba(244, 63, 94, 0.75) !important;
+            border: none !important;
 
-            color: #ff8585 !important;
+            color: #ffffff !important;
 
-            box-shadow: 0 4px 12px rgba(244, 63, 94, 0.25) !important;
+            box-shadow: none !important;
         }
     `;
 }
