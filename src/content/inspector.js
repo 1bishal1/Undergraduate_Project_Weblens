@@ -2,15 +2,45 @@
     let inspectionActive = false;
     let currentElement;
 
-    function inspect(event) {
-        const element = event.target;
+    function isWebLensUiTarget(element) {
+        if (!element || !(element instanceof Element)) {
+            return true;
+        }
+        if (element.id === "weblens-inspection-pointer" || element.id === "weblens-hover-popup") {
+            return true;
+        }
+        return !!(window.WebLensToolbar && window.WebLensToolbar.contains(element));
+    }
 
-        if (
-            !(element instanceof Element) ||
-            element.id === "weblens-inspection-pointer" ||
-            element.id === "weblens-hover-popup" ||
-            (window.WebLensToolbar && window.WebLensToolbar.contains(element))
-        ) {
+    function resolveElementAtPointer(event) {
+        if (event.target instanceof Element && !isWebLensUiTarget(event.target)) {
+            return event.target;
+        }
+
+        let stack;
+        try {
+            stack = document.elementsFromPoint(event.clientX, event.clientY);
+        } catch (e) {
+            return null;
+        }
+
+        if (!stack) {
+            return null;
+        }
+
+        for (const el of stack) {
+            if (el instanceof Element && !isWebLensUiTarget(el)) {
+                return el;
+            }
+        }
+
+        return null;
+    }
+
+    function inspect(event) {
+        const element = resolveElementAtPointer(event);
+
+        if (!element) {
             return;
         }
 
