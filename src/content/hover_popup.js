@@ -205,8 +205,11 @@
             } else {
                 popupElement.textContent = `${tagName} | #000000 | Unknown`;
             }
-        } else if (activeTab === "coming_soon") {
-            popupElement.textContent = `${tagName} | Feature Coming Soon...`;
+        } else if (activeTab === "tech_stack") {
+            const message = window.WebLensTechStack
+                ? window.WebLensTechStack.getTechStackMessage()
+                : "techstack for the web is loading ... wait a moment";
+            popupElement.textContent = `${tagName} | ${message}`;
         } else {
             if (!hasTextContent(element)) {
                 popupElement.textContent = `${tagName} | Empty (...)`;
