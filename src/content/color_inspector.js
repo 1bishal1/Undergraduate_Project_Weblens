@@ -234,7 +234,7 @@
         if (!element || !(element instanceof Element)) {
             return true;
         }
-        if (element.id === "weblens-inspection-pointer" || element.id === "weblens-hover-popup") {
+        if (element.id === "weblens-inspection-pointer" || element.id === "weblens-hover-popup" || element.id === "weblens-techstack-panel") {
             return true;
         }
         if (element.id === "weblens-toolbar") {

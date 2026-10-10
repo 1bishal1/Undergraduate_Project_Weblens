@@ -17,6 +17,7 @@
       "js": [
         "src/content/pointer.js",
         "src/content/color_inspector.js",
+        "src/content/techstack.js",
         "src/content/hover_popup.js",
         "src/content/toolbar.js",
         "src/content/inspector.js",
@@ -28,7 +29,8 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "src/content/toolbar.html"
+        "src/content/toolbar.html",
+        "src/utils/images/*"
       ],
       "matches": [
         "<all_urls>"
