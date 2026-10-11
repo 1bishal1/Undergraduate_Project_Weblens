@@ -6,7 +6,10 @@
         if (!element || !(element instanceof Element)) {
             return true;
         }
-        if (element.id === "weblens-inspection-pointer" || element.id === "weblens-hover-popup") {
+        if (element.id === "weblens-inspection-pointer" || element.id === "weblens-hover-popup" || element.id === "weblens-techstack-panel") {
+            return true;
+        }
+        if (window.WebLensTechStack && typeof window.WebLensTechStack.contains === "function" && window.WebLensTechStack.contains(element)) {
             return true;
         }
         return !!(window.WebLensToolbar && window.WebLensToolbar.contains(element));
@@ -38,6 +41,11 @@
     }
 
     function inspect(event) {
+        const activeTab = window.WebLensState && window.WebLensState.activeTab;
+        if (activeTab === "tech_stack") {
+            return;
+        }
+
         const element = resolveElementAtPointer(event);
 
         if (!element) {
@@ -74,6 +82,9 @@
         clearSelection();
         window.WebLensPointer.deactivate();
         window.WebLensHoverPopup.remove();
+        if (window.WebLensTechStack && typeof window.WebLensTechStack.remove === "function") {
+            window.WebLensTechStack.remove();
+        }
         window.WebLensToolbar.hide();
     }
 
