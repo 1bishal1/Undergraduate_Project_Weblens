@@ -297,8 +297,17 @@
                 navBtns.forEach((b) => b.classList.remove("active"));
                 btn.classList.add("active");
 
-                if (window.WebLensHoverPopup && typeof window.WebLensHoverPopup.refresh === "function") {
-                    window.WebLensHoverPopup.refresh();
+                if (selectedTab === "tech_stack") {
+                    if (window.WebLensTechStack && typeof window.WebLensTechStack.show === "function") {
+                        window.WebLensTechStack.show();
+                    }
+                } else {
+                    if (window.WebLensTechStack && typeof window.WebLensTechStack.hide === "function") {
+                        window.WebLensTechStack.hide();
+                    }
+                    if (window.WebLensHoverPopup && typeof window.WebLensHoverPopup.refresh === "function") {
+                        window.WebLensHoverPopup.refresh();
+                    }
                 }
             });
         });
