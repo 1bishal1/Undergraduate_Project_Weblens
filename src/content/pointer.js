@@ -2,6 +2,7 @@
     const POINTER_ID = "weblens-inspection-pointer";
     let pointerElement;
     let moveHandler;
+    let hidden = false;
 
     function activate() {
         if (pointerElement) {
@@ -25,7 +26,7 @@
         });
 
         document.documentElement.appendChild(pointerElement);
-        document.documentElement.style.cursor = "crosshair";
+        applyVisibility();
         moveHandler = (event) => {
             pointerElement.style.left = `${event.clientX}px`;
             pointerElement.style.top = `${event.clientY}px`;
@@ -33,7 +34,28 @@
         document.addEventListener("mousemove", moveHandler, true);
     }
 
+    function applyVisibility() {
+        if (!pointerElement) {
+            return;
+        }
+        pointerElement.style.display = hidden ? "none" : "";
+        if (!hidden) {
+            document.documentElement.style.cursor = "crosshair";
+        }
+    }
+
+    function hide() {
+        hidden = true;
+        applyVisibility();
+    }
+
+    function show() {
+        hidden = false;
+        applyVisibility();
+    }
+
     function deactivate() {
+        hidden = false;
         document.documentElement.style.cursor = "";
         document.removeEventListener("mousemove", moveHandler, true);
         pointerElement?.remove();
@@ -41,5 +63,5 @@
         moveHandler = undefined;
     }
 
-    window.WebLensPointer = { activate, deactivate };
+    window.WebLensPointer = { activate, deactivate, hide, show };
 })();
